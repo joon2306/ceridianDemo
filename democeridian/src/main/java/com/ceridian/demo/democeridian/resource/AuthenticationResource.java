@@ -19,6 +19,11 @@ import com.ceridian.demo.democeridian.models.AuthenticationResponse;
 import com.ceridian.demo.democeridian.service.JwtUtils;
 import com.ceridian.demo.democeridian.service.MyUserDetailsService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * @author Arjoon
  *
@@ -43,8 +48,12 @@ public class AuthenticationResource {
 	 * @return JWT token.
 	 * @throws DemoCeridianException
 	 */
+	@ApiOperation(value = "API to generate JWT token")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Token generated", response = AuthenticationResponse.class),
+			@ApiResponse(code = 400, message = "Incorrect Username or password") })
 	@PostMapping("/authenticate")
-	public ResponseEntity<?> authentication(@RequestBody AuthenticationRequest authenticationRequest)
+	public ResponseEntity<?> authentication(
+			@ApiParam(value = "name and password of person") @RequestBody AuthenticationRequest authenticationRequest)
 			throws DemoCeridianException {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(

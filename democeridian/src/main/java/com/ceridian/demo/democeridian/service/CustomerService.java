@@ -36,6 +36,8 @@ public class CustomerService {
 
 	private final String CUSTOMER_INVALID = "Customer information is invalid";
 
+	private final String CUSTOMER_NOT_DB = "Customer not present in DB";
+
 	private Logger logger = LoggerFactory.getLogger(CustomerService.class);
 
 	public CustomerService(CustomerRepo customerRepo, ModelMapper mapper, JwtUtils jwtUtils) {
@@ -53,7 +55,7 @@ public class CustomerService {
 		customer.setCreatedOn(LocalDateTime.now());
 
 		customerRepo.save(customer);
-		
+
 		logger.info("customer with name {} created", customerDto.getFirstName());
 
 	}
@@ -67,7 +69,7 @@ public class CustomerService {
 		validateCustomer(customerDto);
 		CustomerId customerId = mapper.map(customerDto, CustomerId.class);
 		CustomerEntity customer = customerRepo.findById(customerId)
-				.orElseThrow(() -> new DemoCeridianException("Customer not present in DB"));
+				.orElseThrow(() -> new DemoCeridianException(CUSTOMER_NOT_DB));
 
 		deleteCustomerEntity(customer);
 
@@ -80,17 +82,17 @@ public class CustomerService {
 		customerRepo.save(customer);
 
 		logger.debug("customer updated");
-		
+
 		logger.info("customer with name {} updated", customerDto.getFirstName());
 
 	}
-	
+
 	public void deleteCustomer(String firstName, String lastName) throws DemoCeridianException {
 		CustomerId customerId = new CustomerId(firstName, lastName);
 		CustomerEntity customer = customerRepo.findById(customerId)
-				.orElseThrow(() -> new DemoCeridianException("Customer not present in DB"));
+				.orElseThrow(() -> new DemoCeridianException(CUSTOMER_NOT_DB));
 		deleteCustomerEntity(customer);
-		
+
 		logger.info("customer with name {} deleted", firstName);
 	}
 
