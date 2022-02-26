@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtils {
 
 	private final String SECRET_KEY = "secret";
+
+	private final String AUTHORIZATION = "Authorization";
+
+	private final String BEARER = "Bearer ";
 
 	/**
 	 * Extract username from token.
@@ -117,6 +123,21 @@ public class JwtUtils {
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		final String username = extractUsername(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	}
+
+	public String getJwtFromRequest(HttpServletRequest request) {
+		final String authorizationHeader = request.getHeader(AUTHORIZATION);
+		String jwt = null;
+		if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
+			jwt = authorizationHeader.substring(7);
+		}
+
+		return jwt;
+	}
+
+	public String getUsernameFromRequest(HttpServletRequest request) {
+		final String jwt = getJwtFromRequest(request);
+		return jwt != null ? extractUsername(jwt) : null;
 	}
 
 }

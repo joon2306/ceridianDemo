@@ -24,7 +24,7 @@ public class CustomerEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "CUSTOMER_ID")
-	private String customerId;
+	private Integer customerId;
 
 	@Column(name = "FIRST_NAME", nullable = false)
 	private String firstName;
@@ -32,32 +32,32 @@ public class CustomerEntity {
 	@Column(name = "LAST_NAME", nullable = false)
 	private String lastName;
 
-	@Column(name = "DATE_OF_BIRTH")
+	@Column(name = "DATE_OF_BIRTH", nullable = false)
 	private LocalDate dob;
 
-	@Column(name = "CREATED_ON", nullable = false)
+	@Column(name = "CREATED_ON")
 	private LocalDateTime createdOn;
 
-	@Column(name = "CREATED_BY", nullable = false)
+	@Column(name = "CREATED_BY")
 	private String createdBy;
 
-	@Column(name = "UPDATED_ON", nullable = false)
+	@Column(name = "UPDATED_ON")
 	private LocalDateTime updatedOn;
 
-	@Column(name = "UPDATED_BY", nullable = false)
+	@Column(name = "UPDATED_BY")
 	private String updatedBy;
 
 	/**
 	 * @return the customerId
 	 */
-	public String getCustomerId() {
+	public Integer getCustomerId() {
 		return customerId;
 	}
 
 	/**
 	 * @param customerId the customerId to set
 	 */
-	public void setCustomerId(String customerId) {
+	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}
 
